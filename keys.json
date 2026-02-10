@@ -1,0 +1,22 @@
+{
+    "keys": [
+        {
+            "key": "0334C604-4903-489A-B1BF-AB33DACAEA48",
+            "owner": "Customer 1",
+            "status": "active",
+            "hwid": ""
+        },
+        {
+            "key": "8CF77974-6A5A-43A3-BC1C-B785AE0FA0D0",
+            "owner": "Customer 2",
+            "status": "active",
+            "hwid": ""
+        },
+        {
+            "key": "09FC3418-8219-44A6-842F-50DD78A6D4A8",
+            "owner": "Customer 3",
+            "status": "active",
+            "hwid": ""
+        }
+    ]
+}

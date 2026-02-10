@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FibezLicense | Management Dashboard</title>
+    <style>
+        :root {
+            --bg: #0a0a0c;
+            --accent: #7c4dff;
+            --text: #ffffff;
+            --surface: #16161a;
+            --border: #2a2a30;
+            --success: #00e676;
+            --error: #ff5252;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, var(--accent), #b388ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--accent);
+        }
+
+        button {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        button:hover {
+            background: #6200ea;
+            transform: translateY(-2px);
+        }
+
+        #result {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+
+        .active { background: rgba(0, 230, 118, 0.1); color: var(--success); border: 1px solid var(--success); }
+        .inactive { background: rgba(255, 82, 82, 0.1); color: var(--error); border: 1px solid var(--error); }
+
+        .footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>FibezLicense Dashboard</h1>
+        <div class="input-group">
+            <input type="text" id="licenseKey" placeholder="Enter License Key...">
+        </div>
+        <button onclick="checkLicense()">Verify Status</button>
+        <div id="result"></div>
+        
+        <div class="footer">
+            Powered by FibezLicense &copy; 2026
+        </div>
+    </div>
+
+    <script>
+        async function checkLicense() {
+            const key = document.getElementById('licenseKey').value.trim();
+            const resultDiv = document.getElementById('result');
+            
+            if (!key) {
+                alert('Please enter a key');
+                return;
+            }
+
+            try {
+                // In production, this would fetch from your real URL
+                // const response = await fetch('https://nexapvp.net/license/keys.json');
+                const response = await fetch('keys.json');
+                const data = await response.json();
+                
+                const found = data.keys.find(k => k.key === key);
+                
+                resultDiv.style.display = 'block';
+                if (found && found.status === 'active') {
+                    resultDiv.className = 'active';
+                    resultDiv.innerHTML = `<strong>VALID LICENSE</strong><br>Owner: ${found.owner}<br>Status: ${found.status.toUpperCase()}`;
+                } else {
+                    resultDiv.className = 'inactive';
+                    resultDiv.innerHTML = `<strong>INVALID OR EXPIRED</strong><br>Status: Blocked/Not Found`;
+                }
+            } catch (e) {
+                console.error(e);
+                alert('Error connecting to license server.');
+            }
+        }
+    </script>
+</body>
+</html>
